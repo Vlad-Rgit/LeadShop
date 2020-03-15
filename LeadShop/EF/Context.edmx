@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="esoftLeadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Calls">
+          <Key>
+            <PropertyRef Name="CallId" />
+          </Key>
+          <Property Name="CallId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CallDatetime" Type="datetime" Nullable="false" />
+          <Property Name="CallDuration" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CallsInLead">
+          <Key>
+            <PropertyRef Name="CallId" />
+            <PropertyRef Name="LeadId" />
+          </Key>
+          <Property Name="CallId" Type="int" Nullable="false" />
+          <Property Name="LeadId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leads">
+          <Key>
+            <PropertyRef Name="LeadId" />
+          </Key>
+          <Property Name="LeadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusLeadId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreationDateTime" Type="datetime" Nullable="false" />
+          <Property Name="WorkWithObjections" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="SellingSkill" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="ProductKnowledge" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusLead">
+          <Key>
+            <PropertyRef Name="StatusLeadId" />
+          </Key>
+          <Property Name="StatusLeadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusLeadName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="WorkWithObjections" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="SellingSkill" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="ProductsKnowledge" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Calls_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Calls" Type="Self.Calls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Calls">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CallsInLead_Calls">
+          <End Role="Calls" Type="Self.Calls" Multiplicity="1" />
+          <End Role="CallsInLead" Type="Self.CallsInLead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calls">
+              <PropertyRef Name="CallId" />
+            </Principal>
+            <Dependent Role="CallsInLead">
+              <PropertyRef Name="CallId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CallsInLead_Leads">
+          <End Role="Leads" Type="Self.Leads" Multiplicity="1" />
+          <End Role="CallsInLead" Type="Self.CallsInLead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leads">
+              <PropertyRef Name="LeadId" />
+            </Principal>
+            <Dependent Role="CallsInLead">
+              <PropertyRef Name="LeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leads_StatusLead">
+          <End Role="StatusLead" Type="Self.StatusLead" Multiplicity="1" />
+          <End Role="Leads" Type="Self.Leads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusLead">
+              <PropertyRef Name="StatusLeadId" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="StatusLeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leads_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Leads" Type="Self.Leads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="esoftLeadModelStoreContainer">
+          <EntitySet Name="Calls" EntityType="Self.Calls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CallsInLead" EntityType="Self.CallsInLead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Leads" EntityType="Self.Leads" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusLead" EntityType="Self.StatusLead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Calls_User" Association="Self.FK_Calls_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Calls" EntitySet="Calls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CallsInLead_Calls" Association="Self.FK_CallsInLead_Calls">
+            <End Role="Calls" EntitySet="Calls" />
+            <End Role="CallsInLead" EntitySet="CallsInLead" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CallsInLead_Leads" Association="Self.FK_CallsInLead_Leads">
+            <End Role="Leads" EntitySet="Leads" />
+            <End Role="CallsInLead" EntitySet="CallsInLead" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leads_StatusLead" Association="Self.FK_Leads_StatusLead">
+            <End Role="StatusLead" EntitySet="StatusLead" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leads_User" Association="Self.FK_Leads_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="esoftLeadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Call">
+          <Key>
+            <PropertyRef Name="CallId" />
+          </Key>
+          <Property Name="CallId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CallDatetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CallDuration" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Calls_User" FromRole="Calls" ToRole="User" />
+          <NavigationProperty Name="Leads" Relationship="Self.CallsInLead" FromRole="Calls" ToRole="Leads" />
+        </EntityType>
+        <EntityType Name="Lead">
+          <Key>
+            <PropertyRef Name="LeadId" />
+          </Key>
+          <Property Name="LeadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusLeadId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreationDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WorkWithObjections" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="SellingSkill" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="ProductKnowledge" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="StatusLead" Relationship="Self.FK_Leads_StatusLead" FromRole="Leads" ToRole="StatusLead" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Leads_User" FromRole="Leads" ToRole="User" />
+          <NavigationProperty Name="Calls" Relationship="Self.CallsInLead" FromRole="Leads" ToRole="Calls" />
+        </EntityType>
+        <EntityType Name="StatusLead">
+          <Key>
+            <PropertyRef Name="StatusLeadId" />
+          </Key>
+          <Property Name="StatusLeadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusLeadName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Leads" Relationship="Self.FK_Leads_StatusLead" FromRole="StatusLead" ToRole="Leads" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WorkWithObjections" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="SellingSkill" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="ProductsKnowledge" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Calls" Relationship="Self.FK_Calls_User" FromRole="User" ToRole="Calls" />
+          <NavigationProperty Name="Leads" Relationship="Self.FK_Leads_User" FromRole="User" ToRole="Leads" />
+        </EntityType>
+        <Association Name="FK_Calls_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Calls" Type="Self.Call" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Calls">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leads_StatusLead">
+          <End Role="StatusLead" Type="Self.StatusLead" Multiplicity="1" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusLead">
+              <PropertyRef Name="StatusLeadId" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="StatusLeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leads_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CallsInLead">
+          <End Role="Calls" Type="Self.Call" Multiplicity="*" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Context" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Calls" EntityType="Self.Call" />
+          <EntitySet Name="Leads" EntityType="Self.Lead" />
+          <EntitySet Name="StatusLeads" EntityType="Self.StatusLead" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Calls_User" Association="Self.FK_Calls_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Calls" EntitySet="Calls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leads_StatusLead" Association="Self.FK_Leads_StatusLead">
+            <End Role="StatusLead" EntitySet="StatusLeads" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leads_User" Association="Self.FK_Leads_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="CallsInLead" Association="Self.CallsInLead">
+            <End Role="Calls" EntitySet="Calls" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="esoftLeadModelStoreContainer" CdmEntityContainer="Context">
+          <EntitySetMapping Name="Calls">
+            <EntityTypeMapping TypeName="esoftLeadModel.Call">
+              <MappingFragment StoreEntitySet="Calls">
+                <ScalarProperty Name="CallId" ColumnName="CallId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CallDatetime" ColumnName="CallDatetime" />
+                <ScalarProperty Name="CallDuration" ColumnName="CallDuration" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leads">
+            <EntityTypeMapping TypeName="esoftLeadModel.Lead">
+              <MappingFragment StoreEntitySet="Leads">
+                <ScalarProperty Name="LeadId" ColumnName="LeadId" />
+                <ScalarProperty Name="StatusLeadId" ColumnName="StatusLeadId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreationDateTime" ColumnName="CreationDateTime" />
+                <ScalarProperty Name="WorkWithObjections" ColumnName="WorkWithObjections" />
+                <ScalarProperty Name="SellingSkill" ColumnName="SellingSkill" />
+                <ScalarProperty Name="ProductKnowledge" ColumnName="ProductKnowledge" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusLeads">
+            <EntityTypeMapping TypeName="esoftLeadModel.StatusLead">
+              <MappingFragment StoreEntitySet="StatusLead">
+                <ScalarProperty Name="StatusLeadId" ColumnName="StatusLeadId" />
+                <ScalarProperty Name="StatusLeadName" ColumnName="StatusLeadName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="esoftLeadModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="esoftLeadModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="WorkWithObjections" ColumnName="WorkWithObjections" />
+                <ScalarProperty Name="SellingSkill" ColumnName="SellingSkill" />
+                <ScalarProperty Name="ProductsKnowledge" ColumnName="ProductsKnowledge" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CallsInLead" TypeName="esoftLeadModel.CallsInLead" StoreEntitySet="CallsInLead">
+            <EndProperty Name="Calls">
+              <ScalarProperty Name="CallId" ColumnName="CallId" />
+            </EndProperty>
+            <EndProperty Name="Leads">
+              <ScalarProperty Name="LeadId" ColumnName="LeadId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

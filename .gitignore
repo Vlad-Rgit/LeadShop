@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/LeadShop.sln
+/packages/EntityFramework.6.2.0/Content/net40
+/packages/EntityFramework.6.2.0/lib
+/packages/EntityFramework.6.2.0/tools
+/packages/EntityFramework.6.2.0/EntityFramework.6.2.0.nupkg
+/.vs/LeadShop/v16
+/LeadShop/obj/Debug
+/LeadShop/Git/.vs
+/LeadShop/bin/Debug
