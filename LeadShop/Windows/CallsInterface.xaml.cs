@@ -68,11 +68,11 @@ namespace LeadShop.Windows
 
         private void EditClick(object sender, RoutedEventArgs e)
         {
-            User selectedUser = view_calls.SelectedItem as User;
-            EditCallWindow win = new EditCallWindow(selectedUser);
+            Call selectedCall = view_calls.SelectedItem as Call;
+            EditCallWindow win = new EditCallWindow(selectedCall);
             win.ShowDialog();
 
-            _context.Entry(selectedUser).Reload();
+            _context.Entry(selectedCall).Reload();
         }
 
         private void CreateCallClick(object sender, RoutedEventArgs e)

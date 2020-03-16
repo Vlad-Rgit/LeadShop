@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LeadShop.EF;
 
 namespace LeadShop.Windows
 {
@@ -19,9 +20,19 @@ namespace LeadShop.Windows
     /// </summary>
     public partial class EditCallWindow : Window
     {
+        private bool _isToUpdate = false;
+
+        public Call Call { get; set; }
+
         public EditCallWindow()
         {
             InitializeComponent();
+        }
+
+        public EditCallWindow(Call call) : this()
+        {
+            _isToUpdate = true;
+            Call = call;
         }
     }
 }
