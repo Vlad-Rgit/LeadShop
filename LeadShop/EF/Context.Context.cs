@@ -16,7 +16,7 @@ namespace LeadShop.EF
     public partial class Context : DbContext
     {
         public Context()
-            : base("name=Context")
+            : base("name=esoftLeadEntities2")
         {
         }
     
@@ -28,7 +28,6 @@ namespace LeadShop.EF
         public virtual DbSet<Call> Calls { get; set; }
         public virtual DbSet<Lead> Leads { get; set; }
         public virtual DbSet<StatusLead> StatusLeads { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

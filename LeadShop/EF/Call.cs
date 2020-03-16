@@ -14,12 +14,6 @@ namespace LeadShop.EF
     
     public partial class Call
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Call()
-        {
-            this.Leads = new HashSet<Lead>();
-        }
-    
         public int CallId { get; set; }
         public int UserId { get; set; }
         public System.DateTime CallDatetime { get; set; }
@@ -27,8 +21,7 @@ namespace LeadShop.EF
         public string Description { get; set; }
         public bool IsDeleted { get; set; }
     
+        public virtual Lead Lead { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Lead> Leads { get; set; }
     }
 }

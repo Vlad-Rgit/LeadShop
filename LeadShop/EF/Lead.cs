@@ -30,9 +30,9 @@ namespace LeadShop.EF
         public string PhoneNumber { get; set; }
         public bool IsDeleted { get; set; }
     
-        public virtual StatusLead StatusLead { get; set; }
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Call> Calls { get; set; }
+        public virtual StatusLead StatusLead { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -1,0 +1,70 @@
+﻿<Window x:Class="LeadShop.Windows.CallsInterface"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LeadShop.Windows" FontFamily="Comic Sans MS"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="CallsInterface" Height="450" Width="800" FontSize="10"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Window.Resources>
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource AdditionalTextBrush}"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style TargetType="ListViewItem">
+            <EventSetter Event="MouseRightButtonUp" Handler="ListViewItem_MouseLeftButtonUp"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="359*"/>
+        </Grid.RowDefinitions>
+
+
+        <WrapPanel  HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Label Content="Звонки пользователя" Margin="15,0,0,0"
+                   VerticalAlignment="Center" Foreground="{StaticResource MainTextBrush}"
+                   FontWeight="Bold"/>
+            <ComboBox Name="cmb_currentUser" Height="36"
+                  Margin="15,0,0,0" ItemsSource="{Binding Users}" Padding =" 10"
+                  SelectedItem="{Binding CurrentUser}"  Foreground="{StaticResource MainTextBrush}"
+                  DisplayMemberPath="Login"/>
+
+            <Button Content="Создать звонок" Margin="15,0,0,0" Padding="10"
+                    Background="{StaticResource AttentionBrush}" Click="CreateCallClick"/>
+        </WrapPanel>
+        
+        <ListView ItemsSource="{Binding Calls}" Name="view_calls"
+                  Grid.Row="1" Foreground="{StaticResource MainTextBrush}">
+            <ListView.View>
+                <GridView >
+                    <GridView.Columns>
+                        <GridViewColumn Header="Дата совершения звонка" DisplayMemberBinding="{Binding CallDatetime}"/>
+                        <GridViewColumn Header="Пользователь" DisplayMemberBinding="{Binding User.Login}"/>
+                        <GridViewColumn Header="Телефон" DisplayMemberBinding="{Binding Lead.PhoneNumber}"/>
+                        <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding CallDuration}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+        <Popup x:Name="editMenu"
+               AllowsTransparency="True"
+               PopupAnimation="Slide"
+               Placement="Mouse"
+               IsOpen="False"
+               StaysOpen="False">
+            <Menu>
+                <MenuItem Header="Редактировать" Background="{StaticResource AttentionBrush}"
+                          Click="EditClick"/>
+                <MenuItem Header="Удалить" Background="{StaticResource AttentionBrush}"/>
+            </Menu>
+        </Popup>
+    </Grid>
+</Window>

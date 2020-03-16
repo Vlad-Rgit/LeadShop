@@ -4,6 +4,9 @@
              xmlns:local="clr-namespace:LeadShop"
              StartupUri="./Windows/MainWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="MainTextBrush" Color="#37474f"/>
+        <SolidColorBrush x:Key="AdditionalTextBrush" Color="#546e7a"/>
+        <SolidColorBrush x:Key="AttentionBrush" Color="#04a0ff"/>
+
     </Application.Resources>
 </Application>
